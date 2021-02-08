@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Animation Clock</title>
+        <style>
+            #my-canvas {
+               margin:0 auto ;
+            }
+        </style>
+    </head>
+    <body>
+    
+            <canvas id="my-canvas" width="400" height="400">
+                Your web browser does not support canvas element.
+            </canvas>
+        
+        <script >
+            window.onload = draw;
+
+function draw() {
+let myCanvas = document.getElementById("my-canvas");
+
+if (myCanvas.getContext) {
+    let ctx = myCanvas.getContext('2d');
+    update(ctx);
+  
+} else {
+    alert("Canvas is not supported.");
+}
+}
+
+function update (ctx) {
+let date = new Date();
+let hours = date.getHours();
+let minutes = date.getMinutes();
+let seconds = date.getSeconds();
+let h = (hours%12)*30+Math.floor(minutes/2);
+let m = minutes*6;
+let s = seconds*6;
+
+//clock pic
+ctx.save();
+let img = new Image();
+img.onload = function() {
+ctx.drawImage(img,30,15, 300,300);
+};
+img.src = 'pics/clock1.png';
+ctx.restore();
+
+//hours
+ctx.save();
+ctx.translate(180, 170);
+ctx.rotate((Math.PI / 180) * h);
+ctx.translate(-180, -170);
+ctx.beginPath();
+ctx.lineWidth = 4;
+ctx.moveTo(180, 180);
+ctx.lineTo(180, 70);
+ctx.closePath();
+ctx.stroke(); 
+ctx.restore();
+
+//minutes
+ctx.save();
+ctx.translate(180, 170);
+ctx.rotate((Math.PI / 180) * m);
+ctx.translate(-180, -170);
+ctx.beginPath();
+ctx.lineWidth = 3;
+ctx.moveTo(180, 180);
+ctx.lineTo(180, 40);
+ctx.closePath();
+ctx.stroke();  
+ctx.restore();
+
+//seconds
+ctx.save();
+ctx.translate(180, 170);
+ctx.rotate((Math.PI / 180) * s);
+ctx.translate(-180, -170);
+ctx.beginPath();
+ctx.strokeStyle = "red"
+ctx.moveTo(180, 200);
+ctx.lineTo(180, 40);
+ctx.closePath();
+ctx.stroke();
+ctx.restore();
+
+//red cirlce
+ctx.save();
+ctx.beginPath();
+ctx.arc(180, 170, 5, 0, 2 * Math.PI);
+ctx.fillStyle = "red";
+ctx.fill();
+ctx.restore();
+
+
+
+
+requestId = requestAnimationFrame(function () {
+    update(ctx)});
+}
+        </script>
+    </body>
+</html>
